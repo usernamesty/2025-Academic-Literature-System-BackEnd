@@ -1,0 +1,451 @@
+.
+├── README.md
+├── backend
+│   ├── Epp_BackEnd.ini
+│   ├── README.md
+│   ├── __init__.py
+│   ├── backend
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── settings.cpython-312.pyc
+│   │   │   ├── urls.cpython-312.pyc
+│   │   │   └── wsgi.cpython-312.pyc
+│   │   ├── asgi.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   └── wsgi.py
+│   ├── business
+│   │   ├── __init__.py
+│   │   ├── __pycache__
+│   │   │   ├── __init__.cpython-312.pyc
+│   │   │   ├── admin.cpython-312.pyc
+│   │   │   └── apps.cpython-312.pyc
+│   │   ├── admin.py
+│   │   ├── api
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── auth.cpython-312.pyc
+│   │   │   │   ├── manage.cpython-312.pyc
+│   │   │   │   ├── paper_details.cpython-312.pyc
+│   │   │   │   ├── paper_interpret.cpython-312.pyc
+│   │   │   │   ├── paper_recommend.cpython-312.pyc
+│   │   │   │   ├── search.cpython-312.pyc
+│   │   │   │   ├── summary.cpython-312.pyc
+│   │   │   │   ├── upload_document.cpython-312.pyc
+│   │   │   │   ├── user_info.cpython-312.pyc
+│   │   │   │   └── vector_database.cpython-312.pyc
+│   │   │   ├── auth.py
+│   │   │   ├── manage.py
+│   │   │   ├── paper_details.py
+│   │   │   ├── paper_interpret.py
+│   │   │   ├── paper_recommend.py
+│   │   │   ├── search.py
+│   │   │   ├── summary.py
+│   │   │   ├── upload_document.py
+│   │   │   ├── user_info.py
+│   │   │   └── vector_database.py
+│   │   ├── apps.py
+│   │   ├── migrations
+│   │   │   ├── 0001_initial.py
+│   │   │   ├── 0002_alter_user_avatar.py
+│   │   │   ├── 0002_paper_score_count.py
+│   │   │   ├── 0003_merge_0002_alter_user_avatar_0002_paper_score_count.py
+│   │   │   ├── 0004_searchrecord.py
+│   │   │   ├── 0005_alter_filereading_conversation_path_and_more.py
+│   │   │   ├── 0006_alter_searchrecord_date.py
+│   │   │   ├── 0007_summaryreport_title.py
+│   │   │   ├── 0008_admin.py
+│   │   │   ├── 0008_rename_upload_time_userdocument_upload_date.py
+│   │   │   ├── 0009_remove_commentreport_comment_id_and_more.py
+│   │   │   ├── 0010_rename_lever1_comment_secondlevelcomment_level1_comment.py
+│   │   │   ├── 0011_merge_20240422_1931.py
+│   │   │   ├── 0012_delete_summaryreport.py
+│   │   │   ├── 0013_summaryreport.py
+│   │   │   ├── 0014_alter_filereading_unique_together_and_more.py
+│   │   │   ├── 0015_delete_filereading.py
+│   │   │   ├── 0016_filereading.py
+│   │   │   ├── 0017_filereading_date.py
+│   │   │   ├── 0018_userdocument_summary.py
+│   │   │   ├── 0019_remove_userdocument_summary.py
+│   │   │   ├── 0020_notification.py
+│   │   │   ├── 0021_searchrecord_related_papers.py
+│   │   │   ├── 0022_alter_commentreport_content_and_more.py
+│   │   │   ├── 0023_subclass_paper_sub_classes.py
+│   │   │   ├── 0023_userdailystatistic.py
+│   │   │   ├── 0024_remove_userdailystatistic_total.py
+│   │   │   ├── 0025_userdailyaddition_delete_userdailystatistic.py
+│   │   │   ├── 0026_summaryreport_status_alter_userdailyaddition_date.py
+│   │   │   ├── 0027_merge_20240517_1449.py
+│   │   │   ├── 0028_abstractreport_status.py
+│   │   │   ├── 0028_firstlevelcomment_visibility_and_more.py
+│   │   │   ├── 0029_alter_abstractreport_status.py
+│   │   │   ├── 0030_merge_20240523_2107.py
+│   │   │   ├── 0030_remove_abstractreport_status.py
+│   │   │   ├── 0031_commentreport_processed.py
+│   │   │   ├── 0032_merge_20240528_1346.py
+│   │   │   ├── 0033_abstractreport_status.py
+│   │   │   ├── 0034_alter_abstractreport_status.py
+│   │   │   ├── 0035_alter_abstractreport_status.py
+│   │   │   ├── 0036_uservisit.py
+│   │   │   ├── __init__.py
+│   │   │   └── __pycache__
+│   │   │       ├── 0001_initial.cpython-312.pyc
+│   │   │       ├── 0002_alter_user_avatar.cpython-312.pyc
+│   │   │       ├── 0002_paper_score_count.cpython-312.pyc
+│   │   │       ├── 0003_merge_0002_alter_user_avatar_0002_paper_score_count.cpython-312.pyc
+│   │   │       ├── 0004_searchrecord.cpython-312.pyc
+│   │   │       ├── 0005_alter_filereading_conversation_path_and_more.cpython-312.pyc
+│   │   │       ├── 0006_alter_searchrecord_date.cpython-312.pyc
+│   │   │       ├── 0007_summaryreport_title.cpython-312.pyc
+│   │   │       ├── 0008_admin.cpython-312.pyc
+│   │   │       ├── 0008_rename_upload_time_userdocument_upload_date.cpython-312.pyc
+│   │   │       ├── 0009_remove_commentreport_comment_id_and_more.cpython-312.pyc
+│   │   │       ├── 0010_rename_lever1_comment_secondlevelcomment_level1_comment.cpython-312.pyc
+│   │   │       ├── 0011_merge_20240422_1931.cpython-312.pyc
+│   │   │       ├── 0012_delete_summaryreport.cpython-312.pyc
+│   │   │       ├── 0013_summaryreport.cpython-312.pyc
+│   │   │       ├── 0014_alter_filereading_unique_together_and_more.cpython-312.pyc
+│   │   │       ├── 0015_delete_filereading.cpython-312.pyc
+│   │   │       ├── 0016_filereading.cpython-312.pyc
+│   │   │       ├── 0017_filereading_date.cpython-312.pyc
+│   │   │       ├── 0018_userdocument_summary.cpython-312.pyc
+│   │   │       ├── 0019_remove_userdocument_summary.cpython-312.pyc
+│   │   │       ├── 0020_notification.cpython-312.pyc
+│   │   │       ├── 0021_searchrecord_related_papers.cpython-312.pyc
+│   │   │       ├── 0022_alter_commentreport_content_and_more.cpython-312.pyc
+│   │   │       ├── 0023_subclass_paper_sub_classes.cpython-312.pyc
+│   │   │       ├── 0023_userdailystatistic.cpython-312.pyc
+│   │   │       ├── 0024_remove_userdailystatistic_total.cpython-312.pyc
+│   │   │       ├── 0025_userdailyaddition_delete_userdailystatistic.cpython-312.pyc
+│   │   │       ├── 0026_summaryreport_status_alter_userdailyaddition_date.cpython-312.pyc
+│   │   │       ├── 0027_merge_20240517_1449.cpython-312.pyc
+│   │   │       ├── 0028_abstractreport_status.cpython-312.pyc
+│   │   │       ├── 0028_firstlevelcomment_visibility_and_more.cpython-312.pyc
+│   │   │       ├── 0029_alter_abstractreport_status.cpython-312.pyc
+│   │   │       ├── 0030_merge_20240523_2107.cpython-312.pyc
+│   │   │       ├── 0030_remove_abstractreport_status.cpython-312.pyc
+│   │   │       ├── 0031_commentreport_processed.cpython-312.pyc
+│   │   │       ├── 0032_merge_20240528_1346.cpython-312.pyc
+│   │   │       ├── 0033_abstractreport_status.cpython-312.pyc
+│   │   │       ├── 0034_alter_abstractreport_status.cpython-312.pyc
+│   │   │       ├── 0035_alter_abstractreport_status.cpython-312.pyc
+│   │   │       ├── 0036_uservisit.cpython-312.pyc
+│   │   │       └── __init__.cpython-312.pyc
+│   │   ├── models
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── abstract_report.cpython-312.pyc
+│   │   │   │   ├── admin.cpython-312.pyc
+│   │   │   │   ├── comment.cpython-312.pyc
+│   │   │   │   ├── comment_report.cpython-312.pyc
+│   │   │   │   ├── file_reading.cpython-312.pyc
+│   │   │   │   ├── notification.cpython-312.pyc
+│   │   │   │   ├── paper.cpython-312.pyc
+│   │   │   │   ├── paper_score.cpython-312.pyc
+│   │   │   │   ├── search_record.cpython-312.pyc
+│   │   │   │   ├── statistic.cpython-312.pyc
+│   │   │   │   ├── subclass.cpython-312.pyc
+│   │   │   │   ├── summary_report.cpython-312.pyc
+│   │   │   │   ├── user.cpython-312.pyc
+│   │   │   │   └── user_document.cpython-312.pyc
+│   │   │   ├── abstract_report.py
+│   │   │   ├── admin.py
+│   │   │   ├── comment.py
+│   │   │   ├── comment_report.py
+│   │   │   ├── file_reading.py
+│   │   │   ├── notification.py
+│   │   │   ├── paper.py
+│   │   │   ├── paper_score.py
+│   │   │   ├── recommended_papers.py
+│   │   │   ├── search_record.py
+│   │   │   ├── statistic.py
+│   │   │   ├── subclass.py
+│   │   │   ├── summary_report.py
+│   │   │   ├── user.py
+│   │   │   └── user_document.py
+│   │   ├── tests.py
+│   │   ├── utils
+│   │   │   ├── __init__.py
+│   │   │   ├── __pycache__
+│   │   │   │   ├── __init__.cpython-312.pyc
+│   │   │   │   ├── download_paper.cpython-312.pyc
+│   │   │   │   ├── knowledge_base.cpython-312.pyc
+│   │   │   │   ├── md_pdf.cpython-312.pyc
+│   │   │   │   ├── milvus.cpython-312.pyc
+│   │   │   │   ├── paper_vdb_init.cpython-312.pyc
+│   │   │   │   ├── reply.cpython-312.pyc
+│   │   │   │   ├── storage.cpython-312.pyc
+│   │   │   │   ├── system_info.cpython-312.pyc
+│   │   │   │   └── vector_embedding.cpython-312.pyc
+│   │   │   ├── classification.py
+│   │   │   ├── download_paper.py
+│   │   │   ├── knowledge_base.py
+│   │   │   ├── md_pdf.py
+│   │   │   ├── milvus.py
+│   │   │   ├── paper_vdb_init.py
+│   │   │   ├── reply.py
+│   │   │   ├── storage.py
+│   │   │   ├── system_info.py
+│   │   │   ├── trans.py
+│   │   │   ├── vector_embedding.py
+│   │   │   └── wkhtmltox-0.12.6-1.msvc2015-win64.exe
+│   │   └── views.py
+│   ├── cache
+│   ├── manage.py
+│   ├── requirements.txt
+│   ├── resource
+│   │   ├── conversions
+│   │   ├── database
+│   │   │   ├── papers
+│   │   │   │   ├── 0000f570-04bc-49fa-b2d4-56447ca1bd9b.pdf
+│   │   │   │   ├── 000345d3-ff5f-4140-8f3c-5f5793cc44d6.pdf
+│   │   │   │   ├── 00071f57-14cc-4e5a-86d7-7df0684a35b9.pdf
+│   │   │   │   ├── 000dac21-5129-46fb-b974-9e84bb9c7846.pdf
+│   │   │   │   ├── 002932dc-b7f6-44fa-bb0e-e9e2ebc81a19.pdf
+│   │   │   │   ├── 00457f5b-74c6-439b-a1f3-aa73ada4a8ca.pdf
+│   │   │   │   ├── 0054c4e9-1763-4e7b-b191-0933798782f1.pdf
+│   │   │   │   ├── 6f344c18-7446-4525-a077-c39aede60373.pdf
+│   │   │   │   └── abs
+│   │   │   │       ├── 2d8474a0-3cff-461f-9c4d-b4102f84651a.txt
+│   │   │   │       └── tmp_kb.txt
+│   │   │   └── users
+│   │   │       ├── batch_download
+│   │   │       │   ├── sanyueqi_batchDownload_20240419160515_42.zip
+│   │   │       │   └── sanyueqi_batchDownload_20240419160707_0.zip
+│   │   │       ├── conversation
+│   │   │       │   ├── read
+│   │   │       │   │   ├── 10.json
+│   │   │       │   │   ├── 100.json
+│   │   │       │   │   ├── 11.json
+│   │   │       │   │   ├── 12.json
+│   │   │       │   │   ├── 13.json
+│   │   │       │   │   ├── 14.json
+│   │   │       │   │   ├── 15.json
+│   │   │       │   │   ├── 16.json
+│   │   │       │   │   ├── 17.json
+│   │   │       │   │   ├── 171.json
+│   │   │       │   │   ├── 172.json
+│   │   │       │   │   ├── 173.json
+│   │   │       │   │   ├── 18.json
+│   │   │       │   │   ├── 19.json
+│   │   │       │   │   ├── 20.json
+│   │   │       │   │   ├── 21.json
+│   │   │       │   │   ├── 22.json
+│   │   │       │   │   ├── 23.json
+│   │   │       │   │   ├── 24.json
+│   │   │       │   │   ├── 25.json
+│   │   │       │   │   ├── 26.json
+│   │   │       │   │   ├── 27.json
+│   │   │       │   │   ├── 28.json
+│   │   │       │   │   ├── 29.json
+│   │   │       │   │   ├── 30.json
+│   │   │       │   │   ├── 31.json
+│   │   │       │   │   ├── 32.json
+│   │   │       │   │   ├── 33.json
+│   │   │       │   │   ├── 34.json
+│   │   │       │   │   ├── 35.json
+│   │   │       │   │   ├── 36.json
+│   │   │       │   │   ├── 37.json
+│   │   │       │   │   ├── 38.json
+│   │   │       │   │   ├── 39.json
+│   │   │       │   │   ├── 40.json
+│   │   │       │   │   ├── 41.json
+│   │   │       │   │   ├── 42.json
+│   │   │       │   │   ├── 43.json
+│   │   │       │   │   ├── 44.json
+│   │   │       │   │   ├── 45.json
+│   │   │       │   │   ├── 46.json
+│   │   │       │   │   ├── 47.json
+│   │   │       │   │   ├── 48.json
+│   │   │       │   │   ├── 49.json
+│   │   │       │   │   ├── 50.json
+│   │   │       │   │   ├── 51.json
+│   │   │       │   │   ├── 52.json
+│   │   │       │   │   ├── 53.json
+│   │   │       │   │   ├── 54.json
+│   │   │       │   │   ├── 55.json
+│   │   │       │   │   ├── 56.json
+│   │   │       │   │   ├── 57.json
+│   │   │       │   │   ├── 58.json
+│   │   │       │   │   ├── 59.json
+│   │   │       │   │   ├── 6.json
+│   │   │       │   │   ├── 60.json
+│   │   │       │   │   ├── 61.json
+│   │   │       │   │   ├── 62.json
+│   │   │       │   │   ├── 63.json
+│   │   │       │   │   ├── 64.json
+│   │   │       │   │   ├── 65.json
+│   │   │       │   │   ├── 66.json
+│   │   │       │   │   ├── 67.json
+│   │   │       │   │   ├── 68.json
+│   │   │       │   │   ├── 69.json
+│   │   │       │   │   ├── 7.json
+│   │   │       │   │   ├── 70.json
+│   │   │       │   │   ├── 71.json
+│   │   │       │   │   ├── 72.json
+│   │   │       │   │   ├── 73.json
+│   │   │       │   │   ├── 74.json
+│   │   │       │   │   ├── 75.json
+│   │   │       │   │   ├── 76.json
+│   │   │       │   │   ├── 77.json
+│   │   │       │   │   ├── 78.json
+│   │   │       │   │   ├── 79.json
+│   │   │       │   │   ├── 8.json
+│   │   │       │   │   ├── 80.json
+│   │   │       │   │   ├── 81.json
+│   │   │       │   │   ├── 82.json
+│   │   │       │   │   ├── 83.json
+│   │   │       │   │   ├── 84.json
+│   │   │       │   │   ├── 85.json
+│   │   │       │   │   ├── 86.json
+│   │   │       │   │   ├── 87.json
+│   │   │       │   │   ├── 88.json
+│   │   │       │   │   ├── 89.json
+│   │   │       │   │   ├── 9.json
+│   │   │       │   │   ├── 92.json
+│   │   │       │   │   ├── 94.json
+│   │   │       │   │   ├── 95.json
+│   │   │       │   │   ├── 96.json
+│   │   │       │   │   ├── 97.json
+│   │   │       │   │   ├── 98.json
+│   │   │       │   │   ├── 99.json
+│   │   │       │   │   └── file_reading_2_tmp_kb_id_map.json
+│   │   │       │   └── search
+│   │   │       │       ├── 1e43e170-948c-487d-a9e7-67316f782c89.json
+│   │   │       │       ├── 1e4f89f9-75e8-4959-b0ec-dded8d4dd5f5.json
+│   │   │       │       ├── 2137baac-ee17-4220-bb80-573f6feac71a.json
+│   │   │       │       ├── 24914589-f50a-41c1-a109-c8bfc3f9dc17.json
+│   │   │       │       ├── 252b1b9b-9140-46e7-9aa2-c27ed78ac97a.json
+│   │   │       │       ├── 260b978d-4451-48cc-ac2d-734ce327d87b.json
+│   │   │       │       ├── 2d8474a0-3cff-461f-9c4d-b4102f84651a.json
+│   │   │       │       ├── 36780a01-fbf3-4e0b-8a29-93474b3584d3.json
+│   │   │       │       ├── 3cd4cb3c-fa28-4b77-8a29-b0cec7f34b74.json
+│   │   │       │       ├── 3d96990d-e6ed-4fde-9b74-6182ee8268ce.json
+│   │   │       │       ├── 3dd11a63-a7e1-4b15-93ea-01d49bb66e5e.json
+│   │   │       │       ├── 42c25b72-67ba-4497-9d54-371ccb0cb785.json
+│   │   │       │       ├── 48f1ca8a-bcab-43c3-a7dd-bcad80b2c80a.json
+│   │   │       │       ├── 5af9c0f6-4449-4a67-ade6-35318b7c1656.json
+│   │   │       │       ├── 5d7a3bd2-e75f-4f1b-a533-6096ec13c6ed.json
+│   │   │       │       ├── 5f8bab96-d89d-4425-8826-553fb9a450f3.json
+│   │   │       │       ├── 602f246a-c830-4e87-8a86-b746b06e1abb.json
+│   │   │       │       ├── 6509cde1-bbe2-46e6-aa2f-fd9ac682d781.json
+│   │   │       │       ├── 6565d78a-636e-4284-84b6-b46da1907b8b.json
+│   │   │       │       ├── 695ef4be-a1e4-4ee7-b603-053bbc824b86.json
+│   │   │       │       ├── 6a77cb70-ebf6-4e10-998d-fce0e30587b0.json
+│   │   │       │       ├── 6b7e4303-5f71-4a8e-9d09-65f49f8baa71.json
+│   │   │       │       ├── 6d473162-d393-49dc-813d-bc0cc4553002.json
+│   │   │       │       ├── 718bba24-73e5-4674-80dc-17a9bd9c6556.json
+│   │   │       │       ├── 758efeb3-99dc-4597-aa01-2b5ef156e2e0.json
+│   │   │       │       ├── 79f7fad1-12bb-4cb1-b8dc-e6a429f3a1f7.json
+│   │   │       │       ├── 7c6a49c2-9a47-45f2-8468-441c18386cbe.json
+│   │   │       │       ├── 83599587-9985-4ca2-8533-417af47178c8.json
+│   │   │       │       ├── 838a4da5-a46b-4d60-9baf-a2d2fb741369.json
+│   │   │       │       ├── 83a7e645-5c86-4672-8f67-afc5de7c9c53.json
+│   │   │       │       ├── 8e0e7778-4de4-439f-bbb0-82fa699adf14.json
+│   │   │       │       ├── 9323cc78-8b59-40cf-851d-1d27ecb3d558.json
+│   │   │       │       ├── 9cbee5df-43fa-4489-8498-6c897e2d2b2b.json
+│   │   │       │       ├── 9d5666de-1201-4663-b5e0-c412f8cbce6b.json
+│   │   │       │       ├── 9d6ba331-1f47-40e5-965e-5d70e8b6237e.json
+│   │   │       │       ├── 9d88928d-14fc-4751-820e-475b532d1a86.json
+│   │   │       │       ├── 9ead5d76-c520-4b94-9d7e-98d16f227709.json
+│   │   │       │       ├── 9fded55d-21ef-4f3e-a4ca-586a5f903abe.json
+│   │   │       │       ├── a07e8313-5e77-4d25-a7d3-4a53e1aaa9f5.json
+│   │   │       │       ├── ab3a800c-0d63-4f14-acd4-f9d628225939.json
+│   │   │       │       ├── ad0276dc-7919-44a8-874d-e3e87b360507.json
+│   │   │       │       ├── b3638bb9-0e35-4d42-ac53-f6f32fede205.json
+│   │   │       │       ├── be923a76-7e65-4bab-9035-b840ed482e29.json
+│   │   │       │       ├── c073cc3a-cb97-4db0-99f8-170bc276afb8.json
+│   │   │       │       ├── c1d30902-ab83-4cbd-b37c-66135aee81d8.json
+│   │   │       │       ├── c4f7d731-bdbe-4034-bab6-c7ba3160f70c.json
+│   │   │       │       ├── c9d506a5-ddab-45a7-95c3-02d888450a29.json
+│   │   │       │       ├── c9e04358-ccc1-4ece-86e9-6d8e19a059e6.json
+│   │   │       │       ├── cbb38ecd-bc92-46c3-bc5b-60ddc80b0cef.json
+│   │   │       │       ├── cfb092e6-2b1b-460a-92df-8a49096cfa5c.json
+│   │   │       │       ├── d186a308-fd4f-4a31-9242-90d15486717b.json
+│   │   │       │       ├── d311ff63-f745-49df-ba55-e23e45be6234.json
+│   │   │       │       ├── db9d3cf2-f739-450c-aa5e-be8cb910281b.json
+│   │   │       │       ├── dec65c82-a1e6-4bd0-b1cc-947934b52e3b.json
+│   │   │       │       ├── df08da02-f56c-4c77-9731-b4bcf99f373a.json
+│   │   │       │       ├── e1da2487-e656-4a8b-bb56-1629fd3ab0f0.json
+│   │   │       │       ├── e35f6870-7011-4537-8bb3-3cbaf351e417.json
+│   │   │       │       ├── ec4e77cb-e7ca-4d41-b0f6-ce752ad0f792.json
+│   │   │       │       ├── ef2e49a3-3e76-4211-a663-bddc8409767a.json
+│   │   │       │       ├── f105cde7-dcf5-42e0-b3ed-e38d9298c21f.json
+│   │   │       │       ├── f853455d-bc3d-4d11-a135-58decd891959.json
+│   │   │       │       ├── fbc05ef9-b24b-4209-8d33-8d42d728a7ee.json
+│   │   │       │       ├── fdbdaaaf-0244-4cb4-be0c-2baf76f0c38c.json
+│   │   │       │       └── search_record_2_tmp_kb_id_map.json
+│   │   │       └── reports
+│   │   │           ├── 00071f57-14cc-4e5a-86d7-7df0684a35b9.md
+│   │   │           ├── 00071f57-14cc-4e5a-86d7-7df0684a35b9.pdf
+│   │   │           ├── 002932dc-b7f6-44fa-bb0e-e9e2ebc81a19.md
+│   │   │           ├── 002932dc-b7f6-44fa-bb0e-e9e2ebc81a19.pdf
+│   │   │           ├── 00457f5b-74c6-439b-a1f3-aa73ada4a8ca.md
+│   │   │           ├── 00457f5b-74c6-439b-a1f3-aa73ada4a8ca.pdf
+│   │   │           ├── 8999c8c1-1edc-43d6-9e79-dcc7f3d24961.md
+│   │   │           ├── 8999c8c1-1edc-43d6-9e79-dcc7f3d24961.pdf
+│   │   │           ├── Deep Learning for Time Series Classification and Extrinsic Regression
+│   │   │           ├── Quantization of Deep Neural Networks for Accurate Edge Computing.md
+│   │   │           └── b4f4a39a-93bc-41c7-a011-726868e6a8cf.pdf
+│   │   ├── uploads
+│   │   │   └── users
+│   │   │       ├── avatars
+│   │   │       │   ├── 20240415212236_97.png
+│   │   │       │   └── default.jpg
+│   │   │       └── documents
+│   │   │           ├── wyx.md
+│   │   │           └── 图像 - ICCV - Segment Anything.pdf
+│   │   ├── vector_database_for_search
+│   │   │   ├── paper_index.faiss
+│   │   │   └── paper_metadata.pkl
+│   │   └── wkhtmltopdf
+│   │       ├── bin
+│   │       │   ├── wkhtmltoimage.exe
+│   │       │   ├── wkhtmltopdf.exe
+│   │       │   └── wkhtmltox.dll
+│   │       ├── include
+│   │       │   └── wkhtmltox
+│   │       │       ├── dllbegin.inc
+│   │       │       ├── dllend.inc
+│   │       │       ├── image.h
+│   │       │       └── pdf.h
+│   │       ├── lib
+│   │       │   └── wkhtmltox.lib
+│   │       └── uninstall.exe
+│   ├── scripts
+│   │   ├── Kimi.py
+│   │   ├── __init__.py
+│   │   ├── chatGLM.py
+│   │   ├── chatchat.py
+│   │   ├── chatchat_newopenai.py
+│   │   ├── clear_abs.py
+│   │   ├── paper.json
+│   │   ├── train_recommand_model.py
+│   │   └── upload_paper_to_database.py
+│   └── vector_database
+│       ├── __init__.py
+│       ├── __pycache__
+│       │   ├── __init__.cpython-312.pyc
+│       │   ├── chatglm_translate.cpython-312.pyc
+│       │   └── milvus_test.cpython-312.pyc
+│       ├── chatglm_translate.py
+│       ├── doc
+│       │   ├── test.json
+│       │   └── zilliz-cloud-Cluster-01-username-password.txt
+│       ├── exe_pdf.py
+│       ├── langchain_test.py
+│       ├── main.py
+│       ├── milvus_test.py
+│       ├── pdf_file
+│       │   └── sam.pdf
+│       ├── sci_bert
+│       │   ├── config.json
+│       │   └── vocab.txt
+│       ├── sci_bert_embedding.py
+│       └── t5_translate.py
+└── tree.txt
+
+41 directories, 407 files
