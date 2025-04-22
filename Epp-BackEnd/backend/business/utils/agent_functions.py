@@ -109,7 +109,7 @@ def save_content_to_file(params):
             pdf = FPDF()
             pdf.add_page()
             # 这里需要更改为本地路径！
-            pdf.add_font("Microsoft YaHei", "", "D:\\ruangong\\2025-Academic-Literature-System\\Epp-BackEnd\\backend\\msyh.ttf", uni=True)
+            pdf.add_font("Microsoft YaHei", "",  os.path.join(os.getcwd(), "msyh.ttf"), uni=True)
             pdf.set_font("Microsoft YaHei", size=12)
             pdf.multi_cell(0, 10, txt=content)
             pdf.output(file_path)
