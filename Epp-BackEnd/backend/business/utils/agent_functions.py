@@ -4,7 +4,7 @@ import cmath
 import json
 from fpdf import FPDF
 import os
-
+from baidusearch.baidusearch import search
 
 # 定义一个类来存储方法和其介绍
 class MethodInfo:
@@ -122,6 +122,39 @@ def save_content_to_file(params):
         error_result = {"error": f"不支持的文件格式: {file_format}"}
         return json.dumps(error_result, ensure_ascii=False)
 
+def get_information_online(parms):
+    prompt=parms.get('prompt')
+    results = search(prompt)
+    i=0
+    top_five_results=[]
+    for result in results:
+        i = i+1
+        top_five_results.append(result)
+        if i==5:
+            break
+    results=top_five_results
+    return json.dumps(results,ensure_ascii=False)
+
+
+
+# 为 get_information_online 方法创建描述
+get_information_online_description = {
+    "name":"get_information_online",
+    "description":"在互联网上搜索信息，并以字典形式返回搜索结果，请尽量使用此工具，以保证生成的准确率",
+    "parameters":{
+        "type":"object",
+        "properties":{
+            "prompt":{
+                "type":"string",
+                "description":"搜索提示词，需要你自己生成"
+            }
+        },
+        "required":[
+            "prompt"
+        ]
+    }
+
+}
 
 # 为 read_file_and_count_info 方法创建详细描述
 read_file_description = {
@@ -240,11 +273,17 @@ save_content_info = MethodInfo(
     description=save_content_description
 )
 
+get_information_online_info = MethodInfo(
+    name="get_information_online",
+    method=get_information_online,
+    description=get_information_online_description
+)
 # 创建字典，存储方法名到类的映射
 method_dict = {
     read_file_info.func_name: read_file_info,
     solve_quadratic_info.func_name: solve_quadratic_info,
     execute_python_code_info.func_name: execute_python_code_info,
-    save_content_info.func_name: save_content_info
+    save_content_info.func_name: save_content_info,
+    get_information_online_info.func_name:get_information_online_info
 }
     
