@@ -375,3 +375,150 @@ def get_user_paper_info(request):
                                  'is_success': True})
         else:
             return JsonResponse({'error': '用户或文献不存在', 'is_success': False}, status=400)
+
+def safetyTest(request):
+    params = []
+    content = request.GET.get('text') # 接口参数
+    b4content = base64.b64encode(content.encode()).decode()
+    p = {
+        'BizType': 'default',
+        'Content': b4content
+    }
+    params.append(p)
+    executor = ThreadPoolExecutor(max_workers=1)
+    resps = executor.map(TextModeration, params)
+    first_resp = next(iter(resps), None)  # 安全获取第一个元素
+    if first_resp is not None:
+        resp_dict = json.loads(first_resp)
+        suggestion = resp_dict.get("Response", {}).get("Suggestion", "Unknown")
+        label = resp_dict.get("Response", {}).get("Label", "Unknown")
+        subLabel = resp_dict.get("Response", {}).get("SubLabel", "Unknown")
+        result = {
+        "input": content,
+        "suggestion": suggestion,
+        "label": label,
+        "subLabel": subLabel
+        }
+        return JsonResponse(result, safe=False)  # 返回 JSON 响应
+
+def safetyTestDef(request):
+    params = []
+    data = json.loads(request.body)
+    content = data.get('text') # 接口参数
+    b4content = base64.b64encode(content.encode()).decode()
+    p = {
+        'BizType': 'default',
+        'Content': b4content
+    }
+    params.append(p)
+    executor = ThreadPoolExecutor(max_workers=1)
+    resps = executor.map(TextModeration, params)
+    first_resp = next(iter(resps), None)  # 安全获取第一个元素
+    if first_resp is not None:
+        resp_dict = json.loads(first_resp)
+        suggestion = resp_dict.get("Response", {}).get("Suggestion", "Unknown")
+        label = resp_dict.get("Response", {}).get("Label", "Unknown")
+        subLabel = resp_dict.get("Response", {}).get("SubLabel", "Unknown")
+        result = {
+        "input": content,
+        "suggestion": suggestion,
+        "label": label,
+        "subLabel": subLabel
+        }
+        return JsonResponse(result, safe=False)  # 返回 JSON 响应
+    
+    #!/usr/bin/env python3
+# -*- coding:utf-8 -*-
+import hashlib
+import hmac
+import json
+import base64
+import time
+from datetime import datetime
+import requests
+from concurrent.futures import ThreadPoolExecutor
+
+
+secret_id = "" # 密钥ID,为避免密钥泄露，取用时找负责人询问密钥id
+secret_key = "" # 密钥Key，同上
+
+
+service = "tms"
+host = "tms.tencentcloudapi.com" # 接口域名
+endpoint = "https://" + host
+region = 'ap-guangzhou' # 地域
+version = "2020-12-29" # 版本为固定值
+algorithm = "TC3-HMAC-SHA256"
+
+
+def do_action(action, params):
+    timestamp = int(time.time())
+    day = datetime.utcfromtimestamp(timestamp).strftime("%Y-%m-%d")
+
+    # ************* 步骤 1：拼接规范请求串 *************
+    http_request_method = "POST"
+    canonical_url = "/"
+    canonical_querystring = ""
+    ct = "application/json; charset=utf-8"
+    payload = json.dumps(params)
+    canonical_headers = "content-type:%s\nhost:%s\n" % (ct, host)
+    signed_headers = "content-type;host"
+    hashed_request_payload = hashlib.sha256(
+        payload.encode("utf-8")).hexdigest()
+    canonical_request = (http_request_method + "\n" +
+                            canonical_url + "\n" +
+                            canonical_querystring + "\n" +
+                            canonical_headers + "\n" +
+                            signed_headers + "\n" +
+                            hashed_request_payload)
+    # print(canonical_request)
+
+    # ************* 步骤 2：拼接待签名字符串 *************
+    credential_scope = day + "/" + service + "/" + "tc3_request"
+    hashed_canonical_request = hashlib.sha256(
+        canonical_request.encode("utf-8")).hexdigest()
+    string_to_sign = (algorithm + "\n" +
+                        str(timestamp) + "\n" +
+                        credential_scope + "\n" +
+                        hashed_canonical_request)
+
+    # print(string_to_sign)
+
+    secret_date = sign(("TC3" + secret_key).encode("utf-8"), day)
+    secret_service = sign(secret_date, service)
+    secret_signing = sign(secret_service, "tc3_request")
+    signature = hmac.new(secret_signing, string_to_sign.encode(
+        "utf-8"), hashlib.sha256).hexdigest()
+    # print(signature)
+
+    # ************* 步骤 4：拼接 Authorization *************
+    authorization = (algorithm + " " +
+                        "Credential=" + secret_id + "/" + credential_scope + ", " +
+                        "SignedHeaders=" + signed_headers + ", " +
+                        "Signature=" + signature)
+    # print(authorization)
+
+    headers = {
+        "Authorization": authorization,
+        "Content-Type": "application/json; charset=utf-8",
+        "Host": host,
+        "X-TC-Action": action,
+        "X-TC-Timestamp": str(timestamp),
+        "X-TC-Version": version,
+        "X-TC-Region": region
+    }
+
+    # 发送请求
+    resp = requests.post(url=endpoint, data=payload, headers=headers)
+    return resp
+
+
+# 计算签名摘要函数
+def sign(key, msg):
+    return hmac.new(key, msg.encode("utf-8"), hashlib.sha256).digest()
+
+
+def TextModeration(params):
+    action = "TextModeration"
+    resp = do_action(action, params)
+    return resp.text

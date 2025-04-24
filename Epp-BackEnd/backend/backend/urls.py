@@ -25,7 +25,7 @@ from business.api.paper_interpret import clear_conversation, re_do_paper_study, 
 from business.api.auth import login, signup, testLogin, logout, manager_login, manager_logout
 from business.api.paper_details import like_paper, score_paper, collect_paper, report_comment, comment_paper, \
     batch_download_papers, get_paper_info, get_first_comment, get_second_comment, like_comment, \
-    get_user_paper_info
+    get_user_paper_info, safetyTest, safetyTestDef
 from business.api.upload_document import upload_paper, remove_uploaded_paper, document_list, get_document_url
 from business.api import user_info, manage
 from business.api.search import get_user_search_history, vector_query, dialog_query, flush, restore_search_record, \
@@ -135,6 +135,10 @@ urlpatterns = [
 
                   # 
                   path("api/search/frequency", get_top_search_keywords),
+                  
+                  # 新增内容安全检测接口
+                  path("api/contentSafety", safetyTest),
+                  path("api/contentSafetyDef", safetyTestDef),
 
                   # 新增Agent接口
                   path("api/translate/llmTranslation",translate_by_llm),
