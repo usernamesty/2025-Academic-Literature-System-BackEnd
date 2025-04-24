@@ -150,6 +150,32 @@ def comment_paper(request):
         paper_id = data.get('paper_id')
         comment_level = data.get('comment_level')  # 1 / 2
         text = data.get('comment')
+        
+        # 调用腾讯云文本审核接口
+        params = []
+        b4content = base64.b64encode(text.encode()).decode()
+        p = {
+            'BizType': 'default',
+            'Content': b4content
+        }
+        params.append(p)
+        executor = ThreadPoolExecutor(max_workers=1)
+        resps = executor.map(TextModeration, params)
+        first_resp = next(iter(resps), None)  # 安全获取第一个元素
+        if first_resp is not None:
+            resp_dict = json.loads(first_resp)
+            suggestion = resp_dict.get("Response", {}).get("Suggestion", "Unknown")
+            label = resp_dict.get("Response", {}).get("Label", "Unknown")
+            subLabel = resp_dict.get("Response", {}).get("SubLabel", "Unknown")
+            result = {
+            "input": text,
+            "suggestion": suggestion,
+            "label": label,
+            "subLabel": subLabel
+            }
+            if suggestion == 'Block': 
+                return JsonResponse({'error': '评论内容不符合规范', 'is_success': False}, status=400)
+        
         user = User.objects.filter(username=username).first()
         paper = Paper.objects.filter(paper_id=paper_id).first()
         if user and paper:
@@ -169,7 +195,7 @@ def comment_paper(request):
                 comment.save()
             paper.comment_count += 1
             paper.save()
-            return JsonResponse({'message': '评论成功', 'is_success': True})
+            return JsonResponse({'message': '评论成功', 'is_success': True, 'suggestion': suggestion})
         else:
             return JsonResponse({'error': '用户或文献不存在', 'is_success': False}, status=400)
     else:
