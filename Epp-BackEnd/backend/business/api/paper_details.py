@@ -439,8 +439,8 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 
 
-secret_id = "" # 密钥ID,为避免密钥泄露，取用时找负责人询问密钥id
-secret_key = "" # 密钥Key，同上
+Tencent_id = "" # 密钥ID，用时需要填写秘钥ID
+Tencent_key = "" # 密钥Key，同上
 
 
 service = "tms"
@@ -484,7 +484,7 @@ def do_action(action, params):
 
     # print(string_to_sign)
 
-    secret_date = sign(("TC3" + secret_key).encode("utf-8"), day)
+    secret_date = sign(("TC3" + Tencent_key).encode("utf-8"), day)
     secret_service = sign(secret_date, service)
     secret_signing = sign(secret_service, "tc3_request")
     signature = hmac.new(secret_signing, string_to_sign.encode(
@@ -493,7 +493,7 @@ def do_action(action, params):
 
     # ************* 步骤 4：拼接 Authorization *************
     authorization = (algorithm + " " +
-                        "Credential=" + secret_id + "/" + credential_scope + ", " +
+                        "Credential=" + Tencent_id + "/" + credential_scope + ", " +
                         "SignedHeaders=" + signed_headers + ", " +
                         "Signature=" + signature)
     # print(authorization)
