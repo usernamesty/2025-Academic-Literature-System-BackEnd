@@ -20,52 +20,14 @@ import os
 
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-
-def queryGLM(msg: str, history=None) -> str:
-    '''
-    对chatGLM3-6B发出一次单纯的询问
-    '''
-    print(msg)
-    chat_chat_url = 'http://172.17.62.88:7861/chat/chat'
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    payload = json.dumps({
-        "query": msg,
-        "prompt_name": "default",
-        "temperature": 0.3
-    })
-
-    session = requests.Session()
-    retry = Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-
-    try:
-        response = session.post(chat_chat_url, data=payload, headers=headers, stream=False)
-        response.raise_for_status()
-
-        # 确保正确处理分块响应
-        decoded_line = next(response.iter_lines()).decode('utf-8')
-        print(decoded_line)
-        if decoded_line.startswith('data'):
-            data = json.loads(decoded_line.replace('data: ', ''))
-        else:
-            data = decoded_line
-        return data['text']
-    except requests.exceptions.ChunkedEncodingError as e:
-        print(f"ChunkedEncodingError: {e}")
-        return "错误: 响应提前结束"
-    except requests.exceptions.RequestException as e:
-        print(f"RequestException: {e}")
-        return f"错误: {e}"
+from business.utils.agent_chats import create_chat_func,NoAPIKeyError
 
 
 def get_summary(paper_ids, report_id):
     print('report_id:', report_id)
     report = SummaryReport.objects.get(report_id=report_id)
     report.status = SummaryReport.STATUS_IN_PROGRESS
+    chat_func = create_chat_func("deepseek-v3")
     try:
         paper_content = []  # 每个论文一个标题，然后是内容
         paper_conclusions = []
@@ -74,25 +36,25 @@ def get_summary(paper_ids, report_id):
         for id in paper_ids:
             p = Paper.objects.filter(paper_id=id).first()
             content_prompt = '将这篇论文的摘要以第三人称的方式复述一遍，摘要如下：\n' + p.abstract
-            paper_content.append(queryGLM(content_prompt, []))
+            paper_content.append(chat_func(content_prompt))
             content_prompt = '将这篇论文的题目转化为中文：\n' + p.title
-            paper_themes.append(queryGLM(content_prompt, []))
+            paper_themes.append(chat_func(content_prompt))
             content_prompt = '将这篇论文的现状部分以第三人称的方式复述一遍：\n' + p.abstract
-            paper_situations.append(queryGLM(content_prompt, []))
+            paper_situations.append(chat_func(content_prompt))
             content_prompt = '将这篇论文的结论和展望部分以第三人称的方式复述一遍：\n' + p.abstract
-            paper_conclusions.append(queryGLM(content_prompt, []))
+            paper_conclusions.append(chat_func(content_prompt))
         # 生成引言
         introduction_prompt = '请根据以下信息生成综述的引言：\n'
         for i in range(len(paper_ids)):
             introduction_prompt += '第' + str(i + 1) + '篇论文的题目是：' + paper_themes[i] + '\n'
             introduction_prompt += '第' + str(i + 1) + '篇论文的现状部分是：' + paper_situations[i] + '\n'
-        introduction = queryGLM(introduction_prompt, [])
+        introduction = chat_func(introduction_prompt)
         # 生成结论
         conclusion_prompt = '请根据以下信息生成综述的结论：\n'
         for i in range(len(paper_ids)):
             conclusion_prompt += '第' + str(i + 1) + '篇论文的题目是：' + paper_themes[i] + '\n'
             conclusion_prompt += '第' + str(i + 1) + '篇论文的结论部分是：' + paper_conclusions[i] + '\n'
-        conclusion = queryGLM(conclusion_prompt, [])
+        conclusion = chat_func(conclusion_prompt)
 
         # 生成综述
         summary = '# 引言\n' + introduction + '\n'

@@ -3,6 +3,10 @@ import sys
 import cmath
 import json
 from fpdf import FPDF
+import subprocess
+import tempfile
+import os
+import uuid
 import os
 from baidusearch.baidusearch import search
 
@@ -81,6 +85,32 @@ def execute_python_code(params):
         sys.stdout = old_stdout
 
     return json.dumps(result, ensure_ascii=False)
+
+
+def execute_python_code_safe(params):
+    with tempfile.TemporaryDirectory() as tmpdir:
+        code = params.get('code')
+        filename = f"code_{uuid.uuid4().hex}.py"
+        filepath = os.path.join(tmpdir, filename)
+
+        with open(filepath, "w", encoding="utf-8") as f:
+            f.write(code)
+
+        docker_cmd = [
+            "docker", "run", "--rm",
+            "--memory", "128m",              
+            "--cpus", "0.5",                 
+            "-v", f"{tmpdir}:/code",         
+            "python:3.10", "python", f"/code/{filename}"
+        ]
+
+        try:
+            output = subprocess.check_output(docker_cmd, stderr=subprocess.STDOUT, timeout=10)
+            return json.dumps(output.decode("utf-8"), ensure_ascii=False)
+        except subprocess.CalledProcessError as e:
+            return json.dumps(f"[Error] Code execution failed:\n{e.output.decode('utf-8')}", ensure_ascii=False)
+        except subprocess.TimeoutExpired:
+            return json.dumps("[Error] Code execution timed out.", ensure_ascii=False)
 
 
 def save_content_to_file(params):

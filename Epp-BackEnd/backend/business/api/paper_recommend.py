@@ -26,50 +26,10 @@ from xml.etree import ElementTree as ET
 import json
 import openai
 from django.conf import settings
-
+from business.utils.agent_chats import create_chat_func,NoAPIKeyError
 
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-
-def queryGLM(msg: str, history=None) -> str:
-    '''
-    对chatGLM3-6B发出一次单纯的询问
-    '''
-    print(msg)
-    chat_chat_url = 'http://172.17.62.88:7861/chat/chat'
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    payload = json.dumps({
-        "query": msg,
-        "prompt_name": "default",
-        "temperature": 0.3
-    })
-
-    session = requests.Session()
-    retry = Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-
-    try:
-        response = session.post(chat_chat_url, data=payload, headers=headers, stream=False)
-        response.raise_for_status()
-
-        # 确保正确处理分块响应
-        decoded_line = next(response.iter_lines()).decode('utf-8')
-        print(decoded_line)
-        if decoded_line.startswith('data'):
-            data = json.loads(decoded_line.replace('data: ', ''))
-        else:
-            data = decoded_line
-        return data['text']
-    except requests.exceptions.ChunkedEncodingError as e:
-        print(f"ChunkedEncodingError: {e}")
-        return "错误: 响应提前结束"
-    except requests.exceptions.RequestException as e:
-        print(f"RequestException: {e}")
-        return f"错误: {e}"
 
 
 class arxiv_paper:
@@ -131,6 +91,9 @@ def query_arxiv_by_date_and_field(start_date, end_date, field="computer vision",
 def refreshCache(self):
     # 在这里写你想要执行的任务
     # 获取当前日期，以及前一周的日期
+    #
+    chat_func = create_chat_func("deepseek-v3")
+    #
     today = datetime.now()
     last_week = today - timedelta(days=7)
     today_str = today.strftime("%Y-%m-%d")
@@ -145,10 +108,10 @@ def refreshCache(self):
     keywords = []
     for paper in papers:
         msg = '这是一段关于' + paper.title + '的摘要，帮我总结三个关键词：' + paper.summary
-        keywords.append(queryGLM(msg))
+        keywords.append(chat_func(messages=msg))
 
     # 从关键词中提取论文
-    key = queryGLM(msg='帮我从这些关键词中提取出来十个关键词：' + ','.join(str(keywords)), history=[])
+    key = chat_func(msg='帮我从这些关键词中提取出来十个关键词：' + ','.join(str(keywords)), history=[])
     from business.utils.paper_vdb_init import get_filtered_paper
     papers = get_filtered_paper(key, k=10)
     # 将推荐数据缓存一天

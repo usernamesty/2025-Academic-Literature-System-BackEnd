@@ -9,6 +9,7 @@ from django.utils import timezone
 from datetime import timedelta
 from django.db.models import Count
 import Levenshtein
+from business.utils.agent_chats import create_chat_func,NoAPIKeyError
 
 
 def insert_search_record_2_kb(search_record_id, tmp_kb_id):
@@ -36,23 +37,6 @@ def get_tmp_kb_id(search_record_id):
     else:
         return None
 
-
-def queryGLM(msg: str, history=None) -> str:
-    '''
-    对chatGLM3-6B发出一次单纯的询问
-    '''
-    openai.api_base = f'http://{settings.REMOTE_CHATCHAT_GLM3_OPENAI_PATH}/v1'
-    openai.api_key = "none"
-    if history is None:
-        history = [{'role' : 'user', 'content': msg}]
-    else:
-        history.extend([{'role' : 'user', 'content': msg}])
-    response = openai.ChatCompletion.create(
-        model="chatglm3-6b",
-        messages=history,
-        stream=False
-    )
-    return response.choices[0].message.content
 
 
 from django.views.decorators.http import require_http_methods
@@ -402,7 +386,8 @@ def dialog_query(request):
         history = c
     # 先判断下是不是要查询论文
     prompt = '想象你是一个科研助手，你手上有一些论文，你判断用户的需求是不是要求你去检索新的论文，你的回答只能是\"yes\"或者\"no\"，他的需求是：\n' + message + '\n'
-    response_type = queryGLM(prompt)
+    chat_func = create_chat_func("deepseek-v3")
+    response_type = chat_func(prompt)
     papers = []
     dialog_type = ''
     content = ''
@@ -445,7 +430,7 @@ def dialog_query(request):
         print(ai_reply)
         dialog_type = 'dialog'
         papers = []
-        content = queryGLM('你叫epp论文助手，以你的视角重新转述这段话：'+ai_reply, [])
+        content = chat_func('你叫epp论文助手，以你的视角重新转述这段话：'+ai_reply, [])
         history['conversation'].extend([{'role': 'user', 'content': message}])
         history['conversation'].extend([{'role': 'assistant', 'content': content}])
     with open(conversation_path, 'w', encoding='utf-8') as f:
@@ -567,46 +552,6 @@ def get_tmp_kb_id(search_record_id):
 
 from requests.adapters import HTTPAdapter
 from urllib3.util.retry import Retry
-
-def queryGLM(msg: str, history=None) -> str:
-    '''
-    对chatGLM3-6B发出一次单纯的询问
-    '''
-    print(msg)
-    chat_chat_url = 'http://172.17.62.88:7861/chat/chat'
-    headers = {
-        'Content-Type': 'application/json'
-    }
-    payload = json.dumps({
-        "query": msg,
-        "prompt_name": "default",
-        "temperature": 0.3
-    })
-
-    session = requests.Session()
-    retry = Retry(total=5, backoff_factor=0.1, status_forcelist=[500, 502, 503, 504])
-    adapter = HTTPAdapter(max_retries=retry)
-    session.mount('http://', adapter)
-    session.mount('https://', adapter)
-
-    try:
-        response = session.post(chat_chat_url, data=payload, headers=headers, stream=False)
-        response.raise_for_status()
-
-        # 确保正确处理分块响应
-        decoded_line = next(response.iter_lines()).decode('utf-8')
-        print(decoded_line)
-        if decoded_line.startswith('data'):
-            data = json.loads(decoded_line.replace('data: ', ''))
-        else:
-            data = decoded_line
-        return data['text']
-    except requests.exceptions.ChunkedEncodingError as e:
-        print(f"ChunkedEncodingError: {e}")
-        return "错误: 响应提前结束"
-    except requests.exceptions.RequestException as e:
-        print(f"RequestException: {e}")
-        return f"错误: {e}"
 
 
 from django.views.decorators.http import require_http_methods
@@ -1006,7 +951,8 @@ def dialog_query(request):
         history = c
     # 先判断下是不是要查询论文
     prompt = '想象你是一个科研助手，你手上有一些论文，你判断用户的需求是不是要求你去检索新的论文，你的回答只能是\"yes\"或者\"no\"，他的需求是：\n' + message + '\n'
-    response_type = queryGLM(prompt)
+    chat_func = create_chat_func("deepseek-v3")
+    response_type = chat_func(prompt)
     papers = []
     dialog_type = ''
     content = ''
@@ -1049,7 +995,7 @@ def dialog_query(request):
         print(ai_reply)
         dialog_type = 'dialog'
         papers = []
-        content = queryGLM('你叫epp论文助手，以你的视角重新转述这段话：'+ai_reply, [])
+        content = chat_func('你叫epp论文助手，以你的视角重新转述这段话：'+ai_reply, [])
         history['conversation'].extend([{'role': 'user', 'content': message}])
         history['conversation'].extend([{'role': 'assistant', 'content': content}])
     with open(conversation_path, 'w', encoding='utf-8') as f:
